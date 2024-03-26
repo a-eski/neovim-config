@@ -190,7 +190,7 @@ vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left wind
 vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
 vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
 vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
-
+--vim.keymap.set("n",
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -237,6 +237,27 @@ require("lazy").setup({
 	--
 	--  This is equivalent to:
 	--    require('Comment').setup({})
+
+	-- tokyonight color scheme
+	{
+		"folke/tokyonight.nvim",
+		lazy = false,
+		priority = 1000,
+		opts = {},
+	},
+
+	-- file tree
+	{
+		"nvim-tree/nvim-tree.lua",
+		version = "*",
+		lazy = false,
+		dependencies = {
+			"nvim-tree/nvim-web-devicons",
+		},
+		config = function()
+			require("nvim-tree").setup({})
+		end,
+	},
 
 	-- "gc" to comment visual regions/lines
 	{ "numToStr/Comment.nvim", opts = {} },
@@ -570,6 +591,26 @@ require("lazy").setup({
 						},
 					},
 				},
+
+				omnisharp = {
+					handlers = {
+						["textDocument/definition"] = function(...)
+							return require("omnisharp_extended").handler(...)
+						end,
+					},
+					keys = {
+						{
+							"gd",
+							function()
+								require("omnisharp_extended").telescope_lsp_definitions()
+							end,
+							desc = "Goto Definition",
+						},
+					},
+					enable_roslyn_analyzers = true,
+					organize_imports_on_format = true,
+					enable_import_completion = true,
+				},
 			}
 
 			-- Ensure the servers and tools above are installed
@@ -819,6 +860,10 @@ require("lazy").setup({
 			---@diagnostic disable-next-line: missing-fields
 			require("nvim-treesitter.configs").setup(opts)
 
+			if type(opts.ensure_installed) == "table" then
+				vim.list_extend(opts.ensure_installed, { "c_sharp" })
+			end
+
 			-- There are additional nvim-treesitter modules that you can use to interact
 			-- with nvim-treesitter. You should go explore a few and see what interests you:
 			--
@@ -868,6 +913,9 @@ require("lazy").setup({
 		},
 	},
 })
+
+-- global keymap, not remappable
+vim.api.nvim_set_keymap("n", "<C-t>", ":NvimTreeToggle<cr>", { silent = true, noremap = true })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
