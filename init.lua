@@ -1,6 +1,6 @@
 --[[
 Neovim configuration based on Kickstart.
-  - https://learnxinyminutes.com/docs/lua/
+  - lua basics: https://learnxinyminutes.com/docs/lua/
 
   After understanding a bit more about Lua, you can use `:help lua-guide` as a
   reference for how Neovim integrates Lua.
@@ -8,13 +8,12 @@ Neovim configuration based on Kickstart.
 
   If new to vim, run :Tutor.
 
-   Once you've completed that, you can continue working through **AND READING** the rest
+  Once you've completed that, you can continue working through **AND READING** the rest
   of the kickstart init.lua.
 
   Can always run AND READ `:help`.
 
-  MOST IMPORTANTLY, we provide a keymap "<space>sh" to [s]earch the [h]elp documentation,
-  which is very useful when you're not exactly sure of what you're looking for.
+  MOST IMPORTANTLY, use "<space>sh" to [s]earch the [h]elp documentation.
 ]]
 --
 
@@ -791,11 +790,12 @@ require("lazy").setup({
 	--
 	--  Here are some example plugins that I've included in the Kickstart repository.
 	--  Uncomment any of the lines below to enable them (you will need to restart nvim).
-	--
-	-- require 'kickstart.plugins.debug',
-	-- require 'kickstart.plugins.indent_line',
-	-- require 'kickstart.plugins.lint',
-
+	require("kickstart.plugins.debug"),
+	require("kickstart.plugins.indent_line"),
+	require("kickstart.plugins.lint"),
+	require("kickstart.plugins.autopairs"),
+	require("kickstart.plugins.neo-tree"),
+	require("kickstart.plugins.gitsigns"), -- adds gitsigns recommend keymaps
 	-- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
 	--    This is the easiest way to modularize your config.
 	--
