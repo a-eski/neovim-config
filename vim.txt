@@ -1,0 +1,73 @@
+continue from :help usr_04.txt
+
+
+Normal mode
+	Deleting a line break		J
+	undo		u
+	redo		<C + r>
+	undo line	U
+	new line below		o
+	new line above		O
+	using count		9k, 3j, 2l, 4h, 3x (delete 3 characters)
+	save and exit or close help		ZZ
+	follow tag link			<C + ]>
+	go back from link		<C + O>
+	next word		w
+	next end of word		e
+	previous word		b
+	previous end of word		ge
+	next work skip whitespace		W
+	next end of word skip whitespace	E
+	previous word skip whitespace		B
+	previous end of word skip whitespace		gE
+	start of line		0
+	end of line		$
+	first char of line		^
+	moving to char		fh (takes you to next h character on the line you are on)
+	moving to char from left		Fh
+	move to matxhing bracket		%
+	go to start of file		gg
+	go to end of file		G
+	go to specific line		100G (goes to line 100)
+	go back to where you came from G		`` (double back ticks)
+	jump to old position		<C + O> (for jumping around when using G)
+	jump to position		<C + I> (you can also use Tab)
+	move halway through file		50% (50 percent down)
+	see where you are in a file		<C + G>
+	move viewing window down		<C + D>
+	move viewing window up		<C + U>
+	center on cursor		zz (zb for bottom and zt for top)
+	scroll up		<C + E>
+	scroll down		<C + Y>
+	search for word		*
+	search for word backwords		#
+
+Command mode
+	quit without saving		:q!
+	reload original			:e!
+	show available autocompletes		<C + D>
+	autocomplete		tab
+	help visual mode		:help v_o (displays visual mode help for o)
+	help insert mode		:help i_CTRL-W (displays insert mode help for <C + W>)
+	help command line		:help c_% (displays help for % in command line)
+	help command mode		:help :s
+	help debugging		:help >cont (open help for debugging command cont)
+	help normal mode		:help g_CTRL-A (help for normal mode g + <C + A> command)
+	help registers		:help quote: (help about : register)
+	handling windows		:help windows.txt
+	help for errors		:help E297
+
+Search mode
+	search		/word<Enter>
+	move next		n
+	move previous		N
+	exit search		ESC
+	match any char		/.
+	matching a special char		/\. (to match on period, must preface with \ as it is a special character)
+
+Marks
+	you can set your own marks in file
+	use command :marks to see
+	m{a-z}		sets mark for letter (from a-z)
+	'{a-z}		go to mark letter
+
