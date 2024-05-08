@@ -1,4 +1,4 @@
-continue from :help usr_04.txt
+continue from :help usr_04.txt section 4.7 using the clipboard.
 
 
 Normal mode
@@ -6,8 +6,8 @@ Normal mode
 	undo		u
 	redo		<C + r>
 	undo line	U
-	new line below		o
-	new line above		O
+	new line below and insert mode		o
+	new line above and insert mode		O
 	using count		9k, 3j, 2l, 4h, 3x (delete 3 characters)
 	save and exit or close help		ZZ
 	follow tag link			<C + ]>
@@ -16,16 +16,21 @@ Normal mode
 	next end of word		e
 	previous word		b
 	previous end of word		ge
-	next work skip whitespace		W
+	next word skip whitespace		W
 	next end of word skip whitespace	E
 	previous word skip whitespace		B
 	previous end of word skip whitespace		gE
 	start of line		0
 	end of line		$
 	first char of line		^
-	moving to char		fh (takes you to next h character on the line you are on)
-	moving to char from left		Fh
-	move to matxhing bracket		%
+	moving to char		f{character}
+	moving to char from left		F{character}
+	jump up to		t{character}, T{character}
+	repeat fowards		:
+	repeate backwords	,
+	copy up to including character		yf{character}
+	copy up character		yt{character}
+	move to matching bracket		%
 	go to start of file		gg
 	go to end of file		G
 	go to specific line		100G (goes to line 100)
@@ -34,18 +39,34 @@ Normal mode
 	jump to position		<C + I> (you can also use Tab)
 	move halway through file		50% (50 percent down)
 	see where you are in a file		<C + G>
-	move viewing window down		<C + D>
-	move viewing window up		<C + U>
+	move viewing window down		<C + d>
+	move viewing window up		<C + u>
 	center on cursor		zz (zb for bottom and zt for top)
-	scroll up		<C + E>
-	scroll down		<C + Y>
+	scroll up		<C + e>
+	scroll down		<C + y>
 	search for word		*
 	search for word backwords		#
+	autocomplete		<C + y>
+	view definition		K
+	duplicate line		yyp
+	swapping 2 characters		xp
+
+	Motions
+		d$		delete to end of line
+		c$		change to end of line
+		cw		change word
+		cc	        change line leaving proceeding whitespace
+		dd		delete line and copy
+		d2w		delete 2 words
+		f<		find first <
+		df>		delete to >
+		.		repeat command
+		y$,w,e,y		yank to end of line, word with whitespace, to end of word, entire line
 
 Command mode
 	quit without saving		:q!
 	reload original			:e!
-	show available autocompletes		<C + D>
+	show available autocompletes		<C + d>
 	autocomplete		tab
 	help visual mode		:help v_o (displays visual mode help for o)
 	help insert mode		:help i_CTRL-W (displays insert mode help for <C + W>)
@@ -56,6 +77,9 @@ Command mode
 	help registers		:help quote: (help about : register)
 	handling windows		:help windows.txt
 	help for errors		:help E297
+	run external command		:!{command}	example: !ls
+	repeat last command		.
+	select and copy all text	:%y+
 
 Search mode
 	search		/word<Enter>
@@ -71,3 +95,11 @@ Marks
 	m{a-z}		sets mark for letter (from a-z)
 	'{a-z}		go to mark letter
 
+Visual mode
+	enter visual mode		v
+	work on whole line visual mode		V
+	go to other side		o
+	reformat selected paragraph	gq
+	reformat selected	=
+	comment selected	gc
+	comment/uncomment selected 		Ctrl + /
