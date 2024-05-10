@@ -444,7 +444,6 @@ require("lazy").setup({
 			--  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
-
 			-- Enable the following language servers
 			--  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
 			--
@@ -457,21 +456,17 @@ require("lazy").setup({
 			local servers = {
 				-- clangd = {},
 				-- gopls = {},
-				-- pyright = {},
+				pyright = {},
 				-- rust_analyzer = {},
 				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-				--
 				-- Some languages (like typescript) have entire language plugins that can be useful:
 				--    https://github.com/pmizio/typescript-tools.nvim
-				--
 				-- But for many setups, the LSP (`tsserver`) will work just fine
-				-- tsserver = {},
-				--
+				tsserver = {},
 
 				lua_ls = {
 					-- cmd = {...},
 					-- filetypes = { ...},
-					-- capabilities = {},
 					settings = {
 						Lua = {
 							completion = {
@@ -495,7 +490,7 @@ require("lazy").setup({
 							function()
 								require("omnisharp_extended").telescope_lsp_definitions()
 							end,
-							desc = "Goto Definition",
+							desc = "[G]oto [D]efinition",
 						},
 					},
 					enable_roslyn_analyzers = true,
@@ -756,6 +751,11 @@ require("lazy").setup({
 			if type(opts.ensure_installed) == "table" then
 				vim.list_extend(opts.ensure_installed, { "c_sharp" })
 			end
+
+			--code folding
+			vim.opt.foldmethod = "expr"
+			vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+			vim.opt.foldlevel = 99
 
 			-- There are additional nvim-treesitter modules that you can use to interact
 			-- with nvim-treesitter. You should go explore a few and see what interests you:
