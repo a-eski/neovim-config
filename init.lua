@@ -8,6 +8,15 @@ vim.g.nofsync = true
 -- Set to true if you have a Nerd Font installed
 vim.g.have_nerd_font = true
 
+--use powershell for ! commands instead of cmd
+vim.o.shell = "pwsh"
+vim.o.shellcmdflag =
+	"-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;"
+vim.o.shellredir = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
+vim.o.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
+vim.o.shellquote = ""
+vim.o.shellxquote = ""
+
 -- [[ Setting options ]]
 -- See `:help vim.opt`
 -- NOTE: You can change these options as you wish!
@@ -82,9 +91,7 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagn
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
 -- is not what someone will guess without a bit more experience.
---
--- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
--- or just use <C-\><C-n> to exit terminal mode
+-- NOTE: This won't work in all terminal emulators/tmux/etc.
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
 -- TIP: Disable arrow keys in normal mode
@@ -139,10 +146,6 @@ require("lazy").setup({
 	-- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
 	"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
 
-	-- NOTE: Plugins can also be added by using a table,
-	-- with the first argument being the link and the following
-	-- keys can be used to configure plugin behavior/loading/etc.
-	--
 	-- Use `opts = {}` to force a plugin to be loaded.
 	--
 	--  This is equivalent to:
@@ -277,29 +280,23 @@ require("lazy").setup({
 			-- See `:help telescope.builtin`
 			local builtin = require("telescope.builtin")
 			vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "[S]earch [H]elp" })
-			vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
+			--vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
 			vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
-			vim.keymap.set("n", "<leader>ss", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
+			--vim.keymap.set("n", "<leader>ss", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
 			vim.keymap.set("n", "<leader>sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
 			vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "[S]earch by [G]rep" })
 			vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
 			vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
 			vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
 			vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
-			vim.keymap.set("n", "<leader>sb", builtin.current_buffer_fuzzy_find, { desc = "[S]earch Current [B]uffer" })
-			vim.keymap.set("n", "<leader>sc", builtin.commands, { desc = "[S]earch [C]ommands" })
-			vim.keymap.set("n", "<leader>sch", builtin.command_history, { desc = "[S]earch [C]ommand [H]istory" })
-			vim.keymap.set("n", "<leader>st", builtin.treesitter, { desc = "[S]earch [T]reesitter" })
-			vim.keymap.set("n", "<leader>sgc", builtin.git_commits, { desc = "[S]earch [G]it [C]ommits" })
-			vim.keymap.set(
-				"n",
-				"<leader>sgcb",
-				builtin.git_bcommits,
-				{ desc = "[S]earch [G]it [C]ommits for [B]uffer" }
-			)
-			vim.keymap.set("n", "<leader>sgb", builtin.git_branches, { desc = "[S]earch [G]it [B]ranches" })
-			vim.keymap.set("n", "<leader>sgs", builtin.git_stash, { desc = "[S]earch [G]it [S]tashes" })
-			vim.keymap.set("n", "<leader>cs", builtin.colorscheme, { desc = "Manage [C]olor [S]cheme" })
+			vim.keymap.set("n", "<leader>/", builtin.current_buffer_fuzzy_find, { desc = "[S]earch Current Buffer" })
+			--vim.keymap.set("n", "<leader>sch", builtin.command_history, { desc = "[S]earch [C]ommand [H]istory" })
+			--vim.keymap.set("n", "<leader>st", builtin.treesitter, { desc = "[S]earch [T]reesitter" })
+			vim.keymap.set("n", "<leader>sc", builtin.git_commits, { desc = "[S]earch [G]it [C]ommits" })
+			vim.keymap.set("n", "<leader>sb", builtin.git_branches, { desc = "[S]earch [G]it [B]ranches" })
+			vim.keymap.set("n", "<leader>ss", builtin.git_stash, { desc = "[S]earch [G]it [S]tashes" })
+			--vim.keymap.set("n", "<leader>cs", builtin.colorscheme, { desc = "Manage [C]olor [S]cheme" })
+
 			--  See `:help telescope.builtin.live_grep()` for information about particular keys
 			vim.keymap.set("n", "<leader>s/", function()
 				builtin.live_grep({
