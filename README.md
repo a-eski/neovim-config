@@ -12,7 +12,8 @@ Neovim configuration based on Kickstart. To get started:
   - use "<space>sn" to [s]earch this [n]eovim configuration (specific to this config)
 
 ## Todos
-* Add LSP support and capabilities for JavaScript/TypeScript, Rust, Go, C, C++, and Zig.
+* Add LSP support and capabilities for Rust, Go, C, C++, and Zig.
 * Setup undotree.
 * Look into setting up fugitive.
-* Setup harpoon.
+* Look into vim-dadbod
+* Setup debugging for C#
