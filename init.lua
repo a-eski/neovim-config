@@ -131,17 +131,7 @@ if not vim.loop.fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
--- [[ Configure and install plugins ]]
---
---  To check the current status of your plugins, run
---    :Lazy
---
---  You can press `?` in this menu for help. Use `:q` to close the window
---
---  To update plugins you can run
---    :Lazy update
---
--- NOTE: Here is where you install your plugins.
+-- Plugins
 require("lazy").setup({
 	-- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
 	"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
@@ -301,7 +291,7 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>sc", builtin.git_commits, { desc = "[S]earch [G]it [C]ommits" })
 			vim.keymap.set("n", "<leader>sb", builtin.git_branches, { desc = "[S]earch [G]it [B]ranches" })
 			vim.keymap.set("n", "<leader>ss", builtin.git_stash, { desc = "[S]earch [G]it [S]tashes" })
-			--vim.keymap.set("n", "<leader>cs", builtin.colorscheme, { desc = "Manage [C]olor [S]cheme" })
+			vim.keymap.set("n", "<leader>cs", builtin.colorscheme, { desc = "Manage [C]olor [S]cheme" })
 
 			--  See `:help telescope.builtin.live_grep()` for information about particular keys
 			vim.keymap.set("n", "<leader>s/", function()
@@ -669,19 +659,47 @@ require("lazy").setup({
 		end,
 	},
 
+	-- {
+	--   "folke/tokyonight.nvim",
+	--   priority = 1000, -- Make sure to load this before all the other start plugins.
+	--   init = function()
+	--     vim.cmd.colorscheme("tokyonight-night")
+	--   end,
+	-- },
+
 	{
-		"folke/tokyonight.nvim",
-		priority = 1000, -- Make sure to load this before all the other start plugins.
+		"ellisonleao/gruvbox.nvim",
+		priority = 1000,
+		config = true,
 		init = function()
-			vim.cmd.colorscheme("tokyonight-night")
-
-			-- You can configure highlights by doing something like:
-			--vim.cmd.hi("Comment gui=none")
+			vim.o.background = "dark"
+			vim.cmd.colorscheme("gruvbox")
 		end,
+		opts = {
+			terminal_colors = false,
+			undercurl = true,
+			underline = true,
+			bold = true,
+			italic = {
+				strings = false,
+				emphasis = true,
+				comments = true,
+				operators = false,
+				folds = true,
+			},
+			strikethrough = true,
+			invert_selection = false,
+			invert_signs = false,
+			invert_tabline = false,
+			invert_intend_guides = false,
+			inverse = true, -- invert background for search, diffs, statuslines and errors
+			contrast = "hard", -- can be "hard", "soft" or empty string
+			palette_overrides = {},
+			overrides = {},
+			dim_inactive = false,
+			transparent_mode = false,
+		},
 	},
-
-	-- nightfox colorschemes (have nice dark color schemes)
-	--{ "EdenEast/nightfox.nvim" },
 
 	-- Highlight todo, notes, etc in comments
 	{
@@ -762,20 +780,17 @@ require("lazy").setup({
 
 			-- There are additional nvim-treesitter modules that you can use to interact
 			-- with nvim-treesitter. You should go explore a few and see what interests you:
-			--
 			--    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
 			--    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
 			--    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 		end,
 	},
 
-	-- adding plugins from lua files, will move all plugins to files in upcoming commits.
-	require("kickstart.plugins.debug"),
-	require("kickstart.plugins.indent_line"),
-	require("kickstart.plugins.lint"),
-	require("kickstart.plugins.autopairs"),
-	--require("kickstart.plugins.neo-tree"), --replacing with oil.nvim
-	require("kickstart.plugins.gitsigns"), -- adds gitsigns recommend keymaps
+	require("neovim-config.plugins.debug"),
+	require("neovim-config.plugins.indent_line"),
+	require("neovim-config.plugins.lint"),
+	require("neovim-config.plugins.autopairs"),
+	require("neovim-config.plugins.gitsigns"),
 }, {
 	ui = {
 		-- If you are using a Nerd Font: set icons to an empty table which will use the
