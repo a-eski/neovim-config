@@ -9,7 +9,7 @@ vim.g.nofsync = true
 vim.g.have_nerd_font = true
 
 --use powershell for ! commands instead of cmd
-vim.o.shell = "pwsh"
+vim.o.shell = "powershell"
 vim.o.shellcmdflag =
 	"-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;"
 vim.o.shellredir = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
@@ -212,19 +212,17 @@ require("lazy").setup({
 		branch = "0.1.x",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
-			{ -- If encountering errors, see telescope-fzf-native README for installation instructions
-				"nvim-telescope/telescope-fzf-native.nvim",
+			"debugloop/telescope-undo.nvim",
 
-				-- `build` is used to run some command when the plugin is installed/updated.
-				-- This is only run then, not every time Neovim starts up.
+			{
+				"nvim-telescope/telescope-fzf-native.nvim",
 				build = "make",
 
-				-- `cond` is a condition used to determine whether this plugin should be
-				-- installed and loaded.
 				cond = function()
 					return vim.fn.executable("make") == 1
 				end,
 			},
+
 			{ "nvim-telescope/telescope-ui-select.nvim" },
 
 			-- Useful for getting pretty icons, but requires a Nerd Font.
@@ -266,12 +264,20 @@ require("lazy").setup({
 					["ui-select"] = {
 						require("telescope.themes").get_dropdown(),
 					},
+					["undo"] = {
+						side_by_side = true,
+						layout_strategy = "vertical",
+						layout_config = {
+							preview_height = 0.8,
+						},
+					},
 				},
 			})
 
 			-- Enable Telescope extensions if they are installed
 			pcall(require("telescope").load_extension, "fzf")
 			pcall(require("telescope").load_extension, "ui-select")
+			pcall(require("telescope").load_extension, "undo")
 
 			-- See `:help telescope.builtin`
 			local builtin = require("telescope.builtin")
@@ -284,14 +290,14 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
 			vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
 			vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
-			vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
+			vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[S]earch existing buffers" })
 			vim.keymap.set("n", "<leader>/", builtin.current_buffer_fuzzy_find, { desc = "[S]earch Current Buffer" })
 			--vim.keymap.set("n", "<leader>sch", builtin.command_history, { desc = "[S]earch [C]ommand [H]istory" })
 			--vim.keymap.set("n", "<leader>st", builtin.treesitter, { desc = "[S]earch [T]reesitter" })
 			vim.keymap.set("n", "<leader>sc", builtin.git_commits, { desc = "[S]earch [G]it [C]ommits" })
 			vim.keymap.set("n", "<leader>sb", builtin.git_branches, { desc = "[S]earch [G]it [B]ranches" })
 			vim.keymap.set("n", "<leader>ss", builtin.git_stash, { desc = "[S]earch [G]it [S]tashes" })
-			vim.keymap.set("n", "<leader>cs", builtin.colorscheme, { desc = "Manage [C]olor [S]cheme" })
+			--vim.keymap.set("n", "<leader>cs", builtin.colorscheme, { desc = "Manage [C]olor [S]cheme" })
 
 			--  See `:help telescope.builtin.live_grep()` for information about particular keys
 			vim.keymap.set("n", "<leader>s/", function()
@@ -305,6 +311,9 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>sn", function()
 				builtin.find_files({ cwd = vim.fn.stdpath("config") })
 			end, { desc = "[S]earch [N]eovim files" })
+
+			-- Telescope undo keymaps
+			vim.keymap.set("n", "<leader>u", "<cmd>Telescope undo<cr>")
 		end,
 	},
 
@@ -672,7 +681,6 @@ require("lazy").setup({
 		priority = 1000,
 		config = true,
 		init = function()
-			vim.o.background = "dark"
 			vim.cmd.colorscheme("gruvbox")
 		end,
 		opts = {
@@ -694,7 +702,9 @@ require("lazy").setup({
 			invert_intend_guides = false,
 			inverse = true, -- invert background for search, diffs, statuslines and errors
 			contrast = "hard", -- can be "hard", "soft" or empty string
-			palette_overrides = {},
+			palette_overrides = {
+				dark = "#000000",
+			},
 			overrides = {},
 			dim_inactive = false,
 			transparent_mode = false,
@@ -731,12 +741,7 @@ require("lazy").setup({
 			--  You could remove this setup call if you don't like it,
 			--  and try some other statusline plugin
 			local statusline = require("mini.statusline")
-			-- set use_icons to true if you have a Nerd Font
 			statusline.setup({ use_icons = vim.g.have_nerd_font })
-
-			-- You can configure sections in the statusline by overriding their
-			-- default behavior. For example, here we set the section for
-			-- cursor location to LINE:COLUMN
 			---@diagnostic disable-next-line: duplicate-set-field
 			statusline.section_location = function()
 				return "%2l:%-2v"
