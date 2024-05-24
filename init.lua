@@ -536,7 +536,7 @@ require("lazy").setup({
 				-- Disable "format_on_save lsp_fallback" for languages that don't
 				-- have a well standardized coding style. You can add additional
 				-- languages here or re-enable it for the disabled ones.
-				local disable_filetypes = { c = true, cpp = true }
+				local disable_filetypes = { c = true, cpp = true, cs = true }
 				return {
 					timeout_ms = 500,
 					lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
@@ -568,9 +568,9 @@ require("lazy").setup({
 					-- Build Step is needed for regex support in snippets.
 					-- This step is not supported in many windows environments.
 					-- Remove the below condition to re-enable on windows.
-					-- if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
-					-- 	return
-					-- end
+					if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
+						return
+					end
 					return "make install_jsregexp"
 				end)(),
 				dependencies = {
@@ -607,10 +607,7 @@ require("lazy").setup({
 				},
 				completion = { completeopt = "menu,menuone,noinsert" },
 
-				-- For an understanding of why these mappings were
-				-- chosen, you will need to read `:help ins-completion`
-				--
-				-- No, but seriously. Please read `:help ins-completion`, it is really good!
+				-- Please read `:help ins-completion`, it is really good!
 				mapping = cmp.mapping.preset.insert({
 					-- Select the [n]ext item
 					["<C-n>"] = cmp.mapping.select_next_item(),
@@ -621,7 +618,6 @@ require("lazy").setup({
 					["<C-b>"] = cmp.mapping.scroll_docs(-4),
 					["<C-f>"] = cmp.mapping.scroll_docs(4),
 
-					-- Accept ([y]es) the completion.
 					--  This will auto-import if your LSP supports it.
 					--  This will expand snippets if the LSP sent a snippet.
 					["<Enter>"] = cmp.mapping.confirm({ select = true }),
@@ -777,8 +773,7 @@ require("lazy").setup({
 			vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 			vim.opt.foldlevel = 99
 
-			-- There are additional nvim-treesitter modules that you can use to interact
-			-- with nvim-treesitter. You should go explore a few and see what interests you:
+			-- There are additional nvim-treesitter modules, examples:
 			--    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
 			--    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
 			--    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
@@ -792,8 +787,6 @@ require("lazy").setup({
 	require("neovim-config.plugins.gitsigns"),
 }, {
 	ui = {
-		-- If you are using a Nerd Font: set icons to an empty table which will use the
-		-- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table
 		icons = vim.g.have_nerd_font and {} or {
 			cmd = "⌘",
 			config = "🛠",

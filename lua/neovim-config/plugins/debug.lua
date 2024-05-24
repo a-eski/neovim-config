@@ -9,7 +9,8 @@ return {
 		"williamboman/mason.nvim",
 		"jay-babu/mason-nvim-dap.nvim",
 		-- Add your own debuggers here
-		"leoluz/nvim-dap-go",
+		--"leoluz/nvim-dap-go",
+		"theHamsta/nvim-dap-virtual-text",
 	},
 	config = function()
 		local dap = require("dap")
@@ -37,22 +38,49 @@ return {
 			}
 		end
 
-		for _, lang in ipairs({ "cs", "fsharp", "vb" }) do
-			if not dap.configurations[lang] then
-				dap.configurations[lang] = {
-					{
-						type = "netcoredbg",
-						name = "Launch file",
-						request = "launch",
-						---@diagnostic disable-next-line: redundant-parameter
-						program = function()
-							return vim.fn.input("Path to dll: ", vim.fn.getcwd() .. "/", "file")
-						end,
-						cwd = "${workspaceFolder}",
-					},
-				}
-			end
-		end
+		-- dap.adapters.coreclr = {
+		-- 	type = "executable",
+		-- 	command = "netcoredbg",
+		-- 	args = { "--interpreter=vscode" },
+		-- }
+
+		-- for _, lang in ipairs({ "cs", "fsharp", "vb" }) do
+		-- 	if not dap.configurations[lang] then
+		-- 		dap.configurations[lang] = {
+		-- 			{
+		-- 				type = "netcoredbg",
+		-- 				name = "Launch file",
+		-- 				request = "launch",
+		-- 				---@diagnostic disable-next-line: redundant-parameter
+		-- 				program = function()
+		-- 					return vim.fn.input("Path to dll: ", vim.fn.getcwd() .. "/", "file")
+		-- 				end,
+		-- 				cwd = "${workspaceFolder}",
+		-- 			},
+		-- 		}
+		-- 	end
+		-- end
+
+		dap.configurations.cs = {
+			{
+				type = "coreclr",
+				name = "Launch - netcoredbg",
+				request = "launch",
+				console = "integratedTerminal",
+				env = "ASPNETCORE_ENVIRONMENT=Development",
+				args = {},
+				program = function()
+					return vim.fn.input("Path to dll", vim.fn.getcwd() .. "/bin/Debug/", "file")
+				end,
+			},
+		}
+
+		require("nvim-dap-virtual-text").setup()
+		require("dapui").setup()
+
+		dap.listeners.after.event_initialized["dapui_config"] = dapui.open
+		dap.listeners.before.event_terminated["dapui_config"] = dapui.close
+		dap.listeners.before.event_exited["dapui_config"] = dapui.close
 
 		-- Basic debugging keymaps, feel free to change to your liking!
 		vim.keymap.set("n", "<F5>", dap.continue, { desc = "Debug: Start/Continue" })
@@ -64,33 +92,7 @@ return {
 			dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
 		end, { desc = "Debug: Set Breakpoint" })
 
-		-- Dap UI setup
-		-- For more information, see |:help nvim-dap-ui|
-		dapui.setup({
-			icons = { expanded = "▾", collapsed = "▸", current_frame = "*" },
-			expand_lines = true,
-			controls = {
-				icons = {
-					pause = "⏸",
-					play = "▶",
-					step_into = "⏎",
-					step_over = "⏭",
-					step_out = "⏮",
-					step_back = "b",
-					run_last = "▶▶",
-					terminate = "⏹",
-					disconnect = "⏏",
-				},
-			},
-		})
-
 		-- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
 		vim.keymap.set("n", "<F7>", dapui.toggle, { desc = "Debug: See last session result." })
-
-		dap.listeners.after.event_initialized["dapui_config"] = dapui.open
-		dap.listeners.before.event_terminated["dapui_config"] = dapui.close
-		dap.listeners.before.event_exited["dapui_config"] = dapui.close
-
-		require("dap-go").setup()
 	end,
 }
