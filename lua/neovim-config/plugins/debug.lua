@@ -70,12 +70,12 @@ return {
 				env = "ASPNETCORE_ENVIRONMENT=Development",
 				args = {},
 				program = function()
-					return vim.fn.input("Path to dll", vim.fn.getcwd() .. "/bin/Debug/", "file")
+					return vim.fn.input("Path to dll? : ", vim.fn.getcwd() .. "\\bin\\Debug\\", "file")
 				end,
 			},
 		}
 
-		require("nvim-dap-virtual-text").setup()
+		require("nvim-dap-virtual-text").setup({ enabled = true })
 		require("dapui").setup()
 
 		dap.listeners.after.event_initialized["dapui_config"] = dapui.open
