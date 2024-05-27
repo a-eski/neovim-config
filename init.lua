@@ -510,6 +510,7 @@ require("lazy").setup({
 				"stylua", -- Used to format Lua code
 				"csharpier",
 				"netcoredbg",
+				--"csharp-language-server",
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
