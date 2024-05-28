@@ -389,32 +389,12 @@ require("lazy").setup({
 			-- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
 			-- used for completion, annotations and signatures of Neovim apis
 			{ "folke/neodev.nvim", opts = {} },
-
-			-- {
-			-- 	"jmederosalvarado/roslyn.nvim",
-			-- 	dependencies = { "hrsh7th/cmp-nvim-lsp" },
-			-- 	config = function()
-			-- 		local capabilities = vim.lsp.protocol.make_client_capabilities()
-			-- 		capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
-			-- 		require("roslyn").setup({
-			-- 			on_attach = on_lsp_attach,
-			-- 			capabilities = capabilities,
-			-- 		})
-			-- 	end,
-			-- },
 		},
 		config = function()
 			-- Brief aside: **What is LSP?**
 			--
-			-- LSP is an initialism you've probably heard, but might not understand what it is.
-			--
 			-- LSP stands for Language Server Protocol. It's a protocol that helps editors
 			-- and language tooling communicate in a standardized fashion.
-			--
-			-- In general, you have a "server" which is some tool built to understand a particular
-			-- language (such as `gopls`, `lua_ls`, `rust_analyzer`, etc.). These Language Servers
-			-- (sometimes called LSP servers, but that's kind of like ATM Machine) are standalone
-			-- processes that communicate with some "client" - in this case, Neovim!
 			--
 			-- LSP provides Neovim with features like:
 			--  - Go to definition
@@ -514,7 +494,7 @@ require("lazy").setup({
 				"stylua", -- Used to format Lua code
 				"csharpier",
 				"netcoredbg",
-				--"csharp-language-server",
+				"omnisharp",
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
