@@ -8,13 +8,13 @@ return {
 		-- Installs the debug adapters for you
 		"williamboman/mason.nvim",
 		"jay-babu/mason-nvim-dap.nvim",
-		-- Add your own debuggers here
+		-- Add debuggers here
 		--"leoluz/nvim-dap-go",
 		"theHamsta/nvim-dap-virtual-text",
 	},
 	config = function()
 		local dap = require("dap")
-		dap.set_log_level("TRACE")
+		--dap.set_log_level("TRACE")
 		local dapui = require("dapui")
 
 		require("mason-nvim-dap").setup({
@@ -35,12 +35,6 @@ return {
 			command = vim.fn.exepath("netcoredbg"),
 			args = { "--interpreter=vscode" },
 		}
-
-		-- dap.adapters.coreclr = {
-		-- 	type = "executable",
-		-- 	command = "netcoredbg",
-		-- 	args = { "--interpreter=vscode" },
-		-- }
 
 		dap.configurations["cs"] = {
 			type = "netcoredbg",
