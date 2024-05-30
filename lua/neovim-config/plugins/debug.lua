@@ -14,6 +14,7 @@ return {
 	},
 	config = function()
 		local dap = require("dap")
+		dap.set_log_level("TRACE")
 		local dapui = require("dapui")
 
 		require("mason-nvim-dap").setup({
@@ -25,18 +26,15 @@ return {
 			handlers = {},
 
 			ensure_installed = {
-				"delve",
 				"netcoredbg",
 			},
 		})
 
-		if not dap.adapters["netcoredbg"] then
-			dap.adapters["netcoredbg"] = {
-				type = "executable",
-				command = vim.fn.exepath("netcoredbg"),
-				args = { "--interpreter=vscode" },
-			}
-		end
+		dap.adapters["netcoredbg"] = {
+			type = "executable",
+			command = vim.fn.exepath("netcoredbg"),
+			args = { "--interpreter=vscode" },
+		}
 
 		-- dap.adapters.coreclr = {
 		-- 	type = "executable",
@@ -44,35 +42,15 @@ return {
 		-- 	args = { "--interpreter=vscode" },
 		-- }
 
-		-- for _, lang in ipairs({ "cs", "fsharp", "vb" }) do
-		-- 	if not dap.configurations[lang] then
-		-- 		dap.configurations[lang] = {
-		-- 			{
-		-- 				type = "netcoredbg",
-		-- 				name = "Launch file",
-		-- 				request = "launch",
-		-- 				---@diagnostic disable-next-line: redundant-parameter
-		-- 				program = function()
-		-- 					return vim.fn.input("Path to dll: ", vim.fn.getcwd() .. "/", "file")
-		-- 				end,
-		-- 				cwd = "${workspaceFolder}",
-		-- 			},
-		-- 		}
-		-- 	end
-		-- end
-
-		dap.configurations.cs = {
-			{
-				type = "netcoredbg",
-				name = "Launch netcoredbg",
-				request = "launch",
-				--console = "integratedTerminal",
-				env = "ASPNETCORE_ENVIRONMENT=Development",
-				--args = {},
-				program = function()
-					return vim.fn.input("Path to dll : ", vim.fn.getcwd() .. "\\", "file")
-				end,
-			},
+		dap.configurations["cs"] = {
+			type = "netcoredbg",
+			name = "Launch file",
+			request = "launch",
+			env = "ASPNETCORE_ENVIRONMENT=Development",
+			---@diagnostic disable-next-line: redundant-parameter
+			program = function()
+				return vim.fn.input("Path to dll: ", vim.fn.getcwd() .. "\\", "file")
+			end,
 		}
 
 		require("nvim-dap-virtual-text").setup({ enabled = true })
