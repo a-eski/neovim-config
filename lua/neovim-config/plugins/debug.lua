@@ -9,7 +9,6 @@ return {
 		"williamboman/mason.nvim",
 		"jay-babu/mason-nvim-dap.nvim",
 		-- Add debuggers here
-		--"leoluz/nvim-dap-go",
 		"theHamsta/nvim-dap-virtual-text",
 	},
 	config = function()
