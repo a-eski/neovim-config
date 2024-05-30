@@ -63,14 +63,14 @@ return {
 
 		dap.configurations.cs = {
 			{
-				type = "coreclr",
-				name = "Launch - netcoredbg",
+				type = "netcoredbg",
+				name = "Launch netcoredbg",
 				request = "launch",
-				console = "integratedTerminal",
+				--console = "integratedTerminal",
 				env = "ASPNETCORE_ENVIRONMENT=Development",
-				args = {},
+				--args = {},
 				program = function()
-					return vim.fn.input("Path to dll? : ", vim.fn.getcwd() .. "\\bin\\Debug\\", "file")
+					return vim.fn.input("Path to dll : ", vim.fn.getcwd() .. "\\", "file")
 				end,
 			},
 		}
