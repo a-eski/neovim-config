@@ -1,4 +1,4 @@
-continue from :help usr_04.txt section 4.7 using the clipboard.
+continue from :help usr_05.txt, continue from 5.7
 
 
 Normal mode
@@ -50,6 +50,9 @@ Normal mode
 	view definition		K
 	duplicate line		yyp
 	swapping 2 characters		xp
+	change case of selected		~
+	start insert mode on first nonblank char		I
+	start Append mode at end of line		A
 
 	Motions
 		d$		delete to end of line
@@ -62,6 +65,9 @@ Normal mode
 		df>		delete to >
 		.		repeat command
 		y$,w,e,y		yank to end of line, word with whitespace, to end of word, entire line
+		daw		delete a word
+		cis		delete inner sentence
+		das		delete a sentence
 
 Command mode
 	quit without saving		:q!
@@ -103,3 +109,4 @@ Visual mode
 	reformat selected	=
 	comment selected	gc
 	comment/uncomment selected 		Ctrl + /
+	select a sentence		vas
