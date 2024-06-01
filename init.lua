@@ -108,6 +108,12 @@ vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper win
 -- oil.nvim keymaps
 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 
+-- code related keymaps
+vim.keymap.set("n", "<leader>;", [[A;<Esc>]], { desc = "Add a semicolon to end of line" })
+vim.keymap.set("n", "<leader>,", [[A,<Esc>]], { desc = "Add a comma to end of line" })
+-- vim.keymap.set("n", "<leader>;", [[mmA;<Esc>m']], { desc = "Add a semicolon to end of line" })
+-- vim.keymap.set("n", "<leader>,", [[mmA,<Esc>m']], { desc = "Add a comma to end of line" })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -530,8 +536,8 @@ require("lazy").setup({
 			end,
 			formatters_by_ft = {
 				lua = { "stylua" },
-				-- python = { "isort", "black" },
-				-- javascript = { { "prettierd", "prettier" } },
+				python = { "isort", "black" },
+				javascript = { { "prettierd", "prettier" } },
 				cs = { "csharpier" },
 			},
 			formatters = {
@@ -553,7 +559,6 @@ require("lazy").setup({
 				build = (function()
 					-- Build Step is needed for regex support in snippets.
 					-- This step is not supported in many windows environments.
-					-- Remove the below condition to re-enable on windows.
 					if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
 						return
 					end
@@ -561,7 +566,6 @@ require("lazy").setup({
 				end)(),
 				dependencies = {
 					-- `friendly-snippets` contains a variety of premade snippets.
-					--    See the README about individual language/framework/plugin snippets:
 					--    https://github.com/rafamadriz/friendly-snippets
 					-- {
 					--   'rafamadriz/friendly-snippets',
@@ -749,10 +753,6 @@ require("lazy").setup({
 
 			---@diagnostic disable-next-line: missing-fields
 			require("nvim-treesitter.configs").setup(opts)
-
-			if type(opts.ensure_installed) == "table" then
-				vim.list_extend(opts.ensure_installed, { "c_sharp" })
-			end
 
 			--code folding
 			vim.opt.foldmethod = "expr"
