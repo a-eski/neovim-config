@@ -29,11 +29,13 @@ return {
 			},
 		})
 
-		dap.adapters["netcoredbg"] = {
-			type = "executable",
-			command = vim.fn.exepath("netcoredbg"),
-			args = { "--interpreter=vscode" },
-		}
+		if not dap.adapters["netcoredbg"] then
+			dap.adapters["netcoredbg"] = {
+				type = "executable",
+				command = vim.fn.exepath("netcoredbg"),
+				args = { "--interpreter=vscode" },
+			}
+		end
 
 		dap.configurations["cs"] = {
 			{
