@@ -1,8 +1,11 @@
 # neovim-config
-Setup primarily for C# and Lua development. Based on https://github.com/nvim-lua/kickstart.nvim.
+My neovim-config I run on Windows. Setup primarily for web, C#, and Lua development.
 
 ## New to neovim?
-Neovim configuration based on Kickstart. To get started:
+- This is a configuration for neovim originally based on kickstart.nvim, which is a starter config maintained by the neovim community to help get people started with neovim.
+- kickstart.nvim will have a ton of in-depth comments and information for beginners, some or all which may be removed from this config over time. This is why I would recommend beginners to install neovim and mess around with kickstart.nvim, read through init.lua, get familiar with vim motions, and get familiar with how to setup a neovim configuration. Then you will be well set to fork kickstart.nvim or this config for your own use :). Of course, you could also go with a distribution like astro, which is a very popular choice in the community. I chose to go with my own config because I experienced the need to configure things with distro's anyway, so figured I may as well setup from scratch and try to get a better understanding of what's happening under the hood.
+
+To get started:
   - lua basics: https://learnxinyminutes.com/docs/lua/
   - how neovim integrates with lua: :help lua-guide
   - if new to vim, run :Tutor
