@@ -36,14 +36,16 @@ return {
 		}
 
 		dap.configurations["cs"] = {
-			type = "netcoredbg",
-			name = "Launch file",
-			request = "launch",
-			env = "ASPNETCORE_ENVIRONMENT=Development",
-			---@diagnostic disable-next-line: redundant-parameter
-			program = function()
-				return vim.fn.input("Path to dll: ", vim.fn.getcwd() .. "\\", "file")
-			end,
+			{
+				type = "netcoredbg",
+				name = "Launch file",
+				request = "launch",
+				env = "ASPNETCORE_ENVIRONMENT=Development",
+				---@diagnostic disable-next-line: redundant-parameter
+				program = function()
+					return vim.fn.input("Path to dll: ", vim.fn.getcwd() .. "\\", "file")
+				end,
+			},
 		}
 
 		require("nvim-dap-virtual-text").setup({ enabled = true })
