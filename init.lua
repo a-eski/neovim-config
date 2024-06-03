@@ -8,15 +8,6 @@ vim.g.nofsync = true
 -- Set to true if you have a Nerd Font installed
 vim.g.have_nerd_font = true
 
---use powershell for ! commands instead of cmd
-vim.o.shell = "powershell"
-vim.o.shellcmdflag =
-	"-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;"
-vim.o.shellredir = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
-vim.o.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
-vim.o.shellquote = ""
-vim.o.shellxquote = ""
-
 -- [[ Setting options ]]
 -- See `:help vim.opt`
 -- NOTE: You can change these options as you wish!
@@ -141,17 +132,8 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
 
-	-- Use `opts = {}` to force a plugin to be loaded.
-	--  This is equivalent to:
-	--    require('Comment').setup({})
+	{ "numToStr/Comment.nvim", opts = {} }, -- Use `opts = {}` to force a plugin to be loaded.
 
-	{ "numToStr/Comment.nvim", opts = {} },
-
-	-- Here is a more advanced example where we pass configuration
-	-- options to `gitsigns.nvim`. This is equivalent to the following Lua:
-	--    require('gitsigns').setup({ ... })
-	--
-	-- See `:help gitsigns` to understand what the configuration keys do
 	{ -- Adds git related signs to the gutter, as well as utilities for managing changes
 		"lewis6991/gitsigns.nvim",
 		opts = {
@@ -193,6 +175,7 @@ require("lazy").setup({
 				["<leader>r"] = { name = "[R]ename", _ = "which_key_ignore" },
 				["<leader>s"] = { name = "[S]earch", _ = "which_key_ignore" },
 				["<leader>w"] = { name = "[W]orkspace", _ = "which_key_ignore" },
+				["<leader>h"] = { name = "Git[H]ub", _ = "which_key_ignore" },
 				--[[ ["<leader>t"] = { name = "[T]erminal", _ = "which_key_ignore" }, ]]
 			})
 		end,
@@ -326,8 +309,6 @@ require("lazy").setup({
 			-- Useful status updates for LSP.
 			{ "j-hui/fidget.nvim", opts = {} },
 
-			-- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
-			-- used for completion, annotations and signatures of Neovim apis
 			{ "folke/neodev.nvim", opts = {} },
 		},
 		config = function()
@@ -487,10 +468,7 @@ require("lazy").setup({
 			}
 
 			-- Ensure the servers and tools above are installed
-			--  To check the current status of installed tools and/or manually install
-			--  other tools, you can run
-			--    :Mason
-			--
+			-- Run command to view:    :Mason
 			--  You can press `g?` for help in this menu.
 			require("mason").setup()
 
@@ -500,7 +478,6 @@ require("lazy").setup({
 			vim.list_extend(ensure_installed, {
 				"stylua", -- Used to format Lua code
 				"csharpier",
-				"netcoredbg",
 				"omnisharp",
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
