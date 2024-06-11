@@ -26,6 +26,7 @@ return {
 
 			ensure_installed = {
 				"netcoredbg",
+				"codelldb",
 			},
 		})
 

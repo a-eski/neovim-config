@@ -309,7 +309,22 @@ require("lazy").setup({
 			-- Useful status updates for LSP.
 			{ "j-hui/fidget.nvim", opts = {} },
 
-			{ "folke/neodev.nvim", opts = {} },
+			-- neodev has been deprecated and is replaced by lazydev.
+			-- leaving here until I confirm lazydev works for my purposes.
+			-- { "folke/neodev.nvim", opts = {} },
+			{
+				"folke/lazydev.nvim",
+				ft = "lua", -- only load on lua files
+				opts = {
+					library = {
+						-- See the configuration section for more details
+						-- Load luvit types when the `vim.uv` word is found
+						{ path = "luvit-meta/library", words = { "vim%.uv" } },
+					},
+				},
+			},
+
+			{ "Bilal2453/luvit-meta", lazy = true }, -- optional `vim.uv` typings
 		},
 		config = function()
 			-- Brief aside: **What is LSP?**
@@ -422,7 +437,8 @@ require("lazy").setup({
 			--  - settings (table): Override the default settings passed when initializing the server.
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 			local servers = {
-				-- clangd = {},
+				clangd = {},
+				cmake_language_server = {},
 				-- gopls = {},
 				pyright = {},
 				-- rust_analyzer = {},
@@ -620,6 +636,7 @@ require("lazy").setup({
 					{ name = "nvim_lsp" },
 					{ name = "luasnip" },
 					{ name = "path" },
+					{ name = "lazydev", group_index = 0 },
 				},
 			})
 		end,
