@@ -13,7 +13,7 @@ return {
 	},
 	config = function()
 		local dap = require("dap")
-		--dap.set_log_level("TRACE")
+		dap.set_log_level("TRACE")
 		local dapui = require("dapui")
 
 		require("mason-nvim-dap").setup({
@@ -26,6 +26,7 @@ return {
 
 			ensure_installed = {
 				"netcoredbg",
+				"codelldb",
 			},
 		})
 
@@ -33,19 +34,39 @@ return {
 			dap.adapters["netcoredbg"] = {
 				type = "executable",
 				command = vim.fn.exepath("netcoredbg"),
-				args = { "--interpreter=vscode" },
+				--args = { "--interpreter=cli" },
+				args = {
+					"--interpreter=vscode",
+					--"--environment=Development",
+				},
 			}
 		end
 
-		dap.configurations["cs"] = {
+		dap.adapters.coreclr = {
+			type = "executable",
+			command = "netcoredbg",
+			args = {
+				"interpreter=vscode",
+			},
+		}
+
+		dap.configurations.cs = {
 			{
 				type = "netcoredbg",
-				name = "Launch file",
+				name = "Launch netcoredbg",
 				request = "launch",
-				env = "ASPNETCORE_ENVIRONMENT=Development",
+				justMyCode = false,
+				stopAtEntry = false,
+				env = {
+					ASPNETCORE_ENVIRONMENT = "Development",
+					ASPNETCORE_URLS = "https://localhost:56248",
+				},
 				---@diagnostic disable-next-line: redundant-parameter
 				program = function()
-					return vim.fn.input("Path to dll: ", vim.fn.getcwd() .. "\\", "file")
+					return vim.fn.input("Path to dll? :", vim.fn.getcwd() .. "\\bin\\Debug\\net", "file")
+				end,
+				cwd = function()
+					return vim.fn.input("Path to appsettings? :", vim.fn.getcwd() .. "\\", "file")
 				end,
 			},
 		}
