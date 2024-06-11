@@ -15,7 +15,7 @@ To get started:
   - use " sn" to [s]earch this [n]eovim configuration (press space (leader) then s then n, specific to this config)
 
 ## Todos
-* Add LSP support and capabilities for Rust, Go, C, C++, and Zig.
-* Look into setting up fugitive or something else to make managing git repos easier from neovim or CLI.
+* Add LSP support and capabilities for Rust, Go, and Zig.
 * Look into vim-dadbod so I can run and write SQL queries from neovim.
-* Rewrite the config so that plugins all have their own lua files (I started this somewhat, you'll see some unreferenced lua files).
+* Rewrite the config so that plugins all have their own lua files.
+* Get debugging working well for .NET and C/C++ projects.
