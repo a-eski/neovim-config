@@ -345,6 +345,14 @@ require("lazy").setup({
 							buffer = event.buf,
 							callback = vim.lsp.buf.clear_references,
 						})
+
+						vim.api.nvim_create_autocmd("LspDetach", {
+							group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
+							callback = function(event2)
+								vim.lsp.buf.clear_references()
+								vim.api.nvim_clear_autocmds({ group = "kickstart-lsp-highlight", buffer = event2.buf })
+							end,
+						})
 					end
 				end,
 			})
@@ -657,7 +665,7 @@ require("lazy").setup({
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
 		opts = {
-			ensure_installed = { "bash", "c", "html", "lua", "markdown", "vim", "vimdoc", "c_sharp" },
+			ensure_installed = { "bash", "c", "diff", "html", "lua", "markdown", "vim", "vimdoc", "c_sharp" },
 			-- Autoinstall languages that are not installed
 			auto_install = true,
 			highlight = {
