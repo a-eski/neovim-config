@@ -23,19 +23,15 @@ vim.opt.signcolumn = "yes"
 -- Decrease update time
 vim.opt.updatetime = 250
 
--- Decrease mapped sequence wait time
--- Displays which-key popup sooner
+-- Decrease mapped sequence wait time. Displays which-key popup sooner
 vim.opt.timeoutlen = 300
 
--- Configure how new splits should be opened
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 
--- Sets how neovim will display certain whitespace characters in the editor.
 vim.opt.list = true
 vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 
--- Preview substitutions live, as you type!
 vim.opt.inccommand = "split"
 
 vim.opt.cursorline = true
@@ -62,7 +58,6 @@ vim.keymap.set("n", "<up>", '<cmd>echo "Use k to move!!"<CR>')
 vim.keymap.set("n", "<down>", '<cmd>echo "Use j to move!!"<CR>')
 
 -- Keybinds to make split navigation easier.
---  Use CTRL+<hjkl> to switch between windows
 --  See `:help wincmd` for a list of all window commands
 vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
 vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
@@ -75,15 +70,13 @@ vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 -- code related keymaps
 vim.keymap.set("n", "<leader>;", [[A;<Esc>]], { desc = "Add a semicolon to end of line" })
 vim.keymap.set("n", "<leader>,", [[A,<Esc>]], { desc = "Add a comma to end of line" })
--- vim.keymap.set("n", "<leader>;", [[mmA;<Esc>m']], { desc = "Add a semicolon to end of lines" })
--- vim.keymap.set("n", "<leader>,", [[mmA,<Esc>m']], { desc = "Add a comma to end of lines" })
+--vim.keymap.set("v", "<leader>;", [[mmA;<Esc>m']], { desc = "Add a semicolon to end of lines" })
+--vim.keymap.set("v", "<leader>,", [[mmA,<Esc>m']], { desc = "Add a comma to end of lines" })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
 -- Highlight when yanking (copying) text
---  Try it with `yap` in normal mode
---  See `:help vim.highlight.on_yank()`
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking (copying) text",
 	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
@@ -118,21 +111,6 @@ require("lazy").setup({
 			},
 		},
 	},
-
-	-- NOTE: Plugins can also be configured to run Lua code when they are loaded.
-	--
-	-- This is often very useful to both group configuration, as well as handle
-	-- lazy loading plugins that don't need to be loaded immediately at startup.
-	--
-	-- For example, in the following configuration, we use:
-	--  event = 'VimEnter'
-	--
-	-- which loads which-key before all the UI elements are loaded. Events can be
-	-- normal autocommands events (`:help autocmd-events`).
-	--
-	-- Then, because we use the `config` key, the configuration only runs
-	-- after the plugin has been loaded:
-	--  config = function() ... end
 
 	{ -- Useful plugin to show you pending keybinds.
 		"folke/which-key.nvim",
@@ -185,9 +163,7 @@ require("lazy").setup({
 			-- [[ Configure Telescope ]]
 			-- See `:help telescope` and `:help telescope.setup()`
 			require("telescope").setup({
-				-- You can put your default mappings / updates / etc. in here
-				--  All the info you're looking for is in `:help telescope.setup()`
-				--
+				--  All the info you're need can be found in `:help telescope.setup()`
 				-- defaults = {
 				--   mappings = {
 				--     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
@@ -285,15 +261,12 @@ require("lazy").setup({
 					end
 
 					-- Jump to the definition of the word under your cursor.
-					--  This is where a variable was first declared, or where a function is defined, etc.
 					--  To jump back, press <C-t>.
 					map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
 
-					-- Find references for the word under your cursor.
 					map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
 
 					-- Jump to the implementation of the word under your cursor.
-					--  Useful when your language has ways of declaring types without an actual implementation.
 					map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
 
 					-- Jump to the type of the word under your cursor.
@@ -314,7 +287,6 @@ require("lazy").setup({
 					)
 
 					-- Rename the variable under your cursor.
-					--  Most Language Servers support renaming across files, etc.
 					map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
 
 					-- Execute a code action, usually your cursor needs to be on top of an error
@@ -322,17 +294,13 @@ require("lazy").setup({
 					map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
 
 					-- Opens a popup that displays documentation about the word under your cursor
-					--  See `:help K` for why this keymap.
 					map("K", vim.lsp.buf.hover, "Hover Documentation")
 
-					-- WARN: This is not Goto Definition, this is Goto Declaration.
-					--  For example, in C this would take you to the header.
 					map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
 					-- The following two autocommands are used to highlight references of the
 					-- word under your cursor when your cursor rests there for a little while.
 					--    See `:help CursorHold` for information about when this is executed
-					--
 					-- When you move your cursor, the highlights will be cleared (the second autocommand).
 					local client = vim.lsp.get_client_by_id(event.data.client_id)
 					if client and client.server_capabilities.documentHighlightProvider then
@@ -357,30 +325,15 @@ require("lazy").setup({
 				end,
 			})
 
-			-- LSP servers and clients are able to communicate to each other what features they support.
-			--  By default, Neovim doesn't support everything that is in the LSP specification.
-			--  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
-			--  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
-			-- Enable the following language servers
-			--  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
-			--
-			--  Add any additional override configuration in the following tables. Available keys are:
-			--  - cmd (table): Override the default command used to start the server
-			--  - filetypes (table): Override the default list of associated filetypes for the server
-			--  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
-			--  - settings (table): Override the default settings passed when initializing the server.
-			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+
 			local servers = {
 				clangd = {},
 				-- gopls = {},
 				pyright = {},
 				-- rust_analyzer = {},
 				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-				-- Some languages (like typescript) have entire language plugins that can be useful:
-				--    https://github.com/pmizio/typescript-tools.nvim
-				-- But for many setups, the LSP (`tsserver`) will work just fine
 				tsserver = {},
 
 				lua_ls = {
@@ -418,17 +371,13 @@ require("lazy").setup({
 				},
 			}
 
-			-- Ensure the servers and tools above are installed
 			-- Run command to view:    :Mason
-			--  You can press `g?` for help in this menu.
 			require("mason").setup()
 
-			-- You can add other tools here that you want Mason to install
-			-- for you, so that they are available from within Neovim.
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
 				"stylua", -- Used to format Lua code
-				"csharpier",
+				--"csharpier",
 				"omnisharp",
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
@@ -466,13 +415,13 @@ require("lazy").setup({
 				lua = { "stylua" },
 				python = { "isort", "black" },
 				javascript = { { "prettierd", "prettier" } },
-				cs = { "csharpier" },
+				--cs = { "csharpier" },
 			},
 			formatters = {
-				csharpier = {
-					command = "dotnet-csharpier",
-					args = { "--write-stdout" },
-				},
+				--csharpier = {
+				--command = "dotnet-csharpier",
+				--args = { "--write-stdout" },
+				--},
 			},
 		},
 	},
@@ -495,12 +444,12 @@ require("lazy").setup({
 				dependencies = {
 					-- `friendly-snippets` contains a variety of premade snippets.
 					--    https://github.com/rafamadriz/friendly-snippets
-					-- {
-					--   'rafamadriz/friendly-snippets',
-					--   config = function()
-					--     require('luasnip.loaders.from_vscode').lazy_load()
-					--   end,
-					-- },
+					{
+						"rafamadriz/friendly-snippets",
+						config = function()
+							require("luasnip.loaders.from_vscode").lazy_load()
+						end,
+					},
 				},
 			},
 			"saadparwaiz1/cmp_luasnip",
