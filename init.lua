@@ -10,7 +10,9 @@ vim.opt.relativenumber = true
 vim.opt.mouse = "a"
 vim.opt.showmode = false
 
-vim.opt.clipboard = "unnamedplus"
+vim.schedule(function()
+	vim.opt.clipboard = "unnamedplus"
+end)
 
 vim.opt.breakindent = true
 vim.opt.undofile = true
@@ -326,6 +328,12 @@ require("lazy").setup({
 								vim.api.nvim_clear_autocmds({ group = "kickstart-lsp-highlight", buffer = event2.buf })
 							end,
 						})
+
+						if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+							map("<leader>th", function()
+								vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+							end, "[T]oggle Inlay [H]ints")
+						end
 					end
 				end,
 			})
@@ -531,14 +539,6 @@ require("lazy").setup({
 		end,
 	},
 
-	-- {
-	--   "folke/tokyonight.nvim",
-	--   priority = 1000, -- Make sure to load this before all the other start plugins.
-	--   init = function()
-	--     vim.cmd.colorscheme("tokyonight-night")
-	--   end,
-	-- },
-
 	{
 		"ellisonleao/gruvbox.nvim",
 		priority = 1000,
@@ -654,6 +654,7 @@ require("lazy").setup({
 	require("neovim-config.plugins.lint"),
 	require("neovim-config.plugins.autopairs"),
 	require("neovim-config.plugins.gitsigns"),
+	require("neovim-config.plugins.sql"),
 }, {
 	ui = {
 		icons = vim.g.have_nerd_font and {} or {

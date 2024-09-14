@@ -1,5 +1,5 @@
 # neovim-config
-My neovim-config I run on Windows. Setup primarily for web, C#, and Lua development.
+My neovim-config I run on Windows. Setup primarily for web, C#, C, and Lua development.
 
 ## New to neovim?
 - This is a configuration for neovim originally based on kickstart.nvim, which is a starter config maintained by the neovim community to help get people started with neovim.
