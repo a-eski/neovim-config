@@ -72,6 +72,7 @@ vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 -- code related keymaps
 vim.keymap.set("n", "<leader>;", [[A;<Esc>]], { desc = "Add a semicolon to end of line" })
 vim.keymap.set("n", "<leader>,", [[A,<Esc>]], { desc = "Add a comma to end of line" })
+vim.keymap.set("n", "gm", "gM", { desc = "Go to middle of line" })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
