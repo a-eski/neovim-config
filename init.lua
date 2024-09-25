@@ -2,9 +2,10 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.g.nofsync = true
 vim.g.have_nerd_font = true
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 
 -- [[ Setting options ]]
--- See `:help vim.opt` or ':help number', etc.
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.mouse = "a"
@@ -22,11 +23,8 @@ vim.opt.smartcase = true
 
 vim.opt.signcolumn = "yes"
 
--- Decrease update time
-vim.opt.updatetime = 250
-
--- Decrease mapped sequence wait time. Displays which-key popup sooner
-vim.opt.timeoutlen = 300
+vim.opt.updatetime = 250 -- Decrease update time
+vim.opt.timeoutlen = 300 -- Decrease mapped sequence wait time. Displays which-key popup sooner
 
 vim.opt.splitright = true
 vim.opt.splitbelow = true
@@ -69,10 +67,22 @@ vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper win
 -- oil.nvim keymaps
 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 
--- code related keymaps
+-- my code related keymaps
 vim.keymap.set("n", "<leader>;", [[A;<Esc>]], { desc = "Add a semicolon to end of line" })
 vim.keymap.set("n", "<leader>,", [[A,<Esc>]], { desc = "Add a comma to end of line" })
 vim.keymap.set("n", "gm", "gM", { desc = "Go to middle of line" })
+vim.keymap.set("n", "t", "<s-%>", { desc = "Go to matching symbol" })
+vim.keymap.set("n", "<leader>w", ":w<enter>", { desc = "Save" })
+vim.keymap.set("n", "<leader>q", ":q<enter>", { desc = "Quit" })
+vim.keymap.set("n", "<leader>wq", ":wq<enter>", { desc = "Save and quit" })
+vim.keymap.set("n", "<leader>d", ":q!<enter>", { desc = "Discard changes and quit" })
+vim.keymap.set("n", "<leader>o", ":<C-u>call append(line('.'), repeat([''], v:count1))<CR>", { desc = "Newline below" })
+vim.keymap.set(
+	"n",
+	"<leader>O",
+	":<C-u>call append(line('.') - 1, repeat([''], v:count1))<CR>",
+	{ desc = "Newline above" }
+)
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -84,6 +94,12 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	callback = function()
 		vim.highlight.on_yank()
 	end,
+})
+
+-- Remove trailing spaces
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+	pattern = { "*" },
+	command = [[%s/\s\+$//e]],
 })
 
 -- [[ Install `lazy.nvim` plugin manager ]]
