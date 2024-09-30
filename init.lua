@@ -57,7 +57,6 @@ vim.keymap.set("n", "<right>", '<cmd>echo "Use l to move!!"<CR>')
 vim.keymap.set("n", "<up>", '<cmd>echo "Use k to move!!"<CR>')
 vim.keymap.set("n", "<down>", '<cmd>echo "Use j to move!!"<CR>')
 
--- Keybinds to make split navigation easier.
 --  See `:help wincmd` for a list of all window commands
 vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
 vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
@@ -72,6 +71,7 @@ vim.keymap.set("n", "<leader>;", [[A;<Esc>]], { desc = "Add a semicolon to end o
 vim.keymap.set("n", "<leader>,", [[A,<Esc>]], { desc = "Add a comma to end of line" })
 vim.keymap.set("n", "gm", "gM", { desc = "Go to middle of line" })
 vim.keymap.set("n", "t", "<s-%>", { desc = "Go to matching symbol" })
+vim.keymap.set("v", "t", "<s-%>", { desc = "Go to matching symbol" })
 vim.keymap.set("n", "<leader>w", ":w<enter>", { desc = "Save" })
 vim.keymap.set("n", "<leader>q", ":q<enter>", { desc = "Quit" })
 vim.keymap.set("n", "<leader>wq", ":wq<enter>", { desc = "Save and quit" })
@@ -364,7 +364,7 @@ require("lazy").setup({
 				pyright = {},
 				-- rust_analyzer = {},
 				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-				ts_ls = {},
+				-- ts_ls = {},
 
 				lua_ls = {
 					-- cmd = {...},
