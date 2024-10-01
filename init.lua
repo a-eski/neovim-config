@@ -69,13 +69,20 @@ vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 -- my code related keymaps
 vim.keymap.set("n", "<leader>;", [[A;<Esc>]], { desc = "Add a semicolon to end of line" })
 vim.keymap.set("n", "<leader>,", [[A,<Esc>]], { desc = "Add a comma to end of line" })
+
 vim.keymap.set("n", "gm", "gM", { desc = "Go to middle of line" })
+vim.keymap.set("n", ";", "0", { desc = "Go to first character of line" })
+vim.keymap.set("n", ",", "<s-^>", { desc = "Go to first character of line" })
+vim.keymap.set("n", ".", "<s-$>", { desc = "Go to first character of line" })
+
 vim.keymap.set("n", "t", "<s-%>", { desc = "Go to matching symbol" })
 vim.keymap.set("v", "t", "<s-%>", { desc = "Go to matching symbol" })
+
 vim.keymap.set("n", "<leader>w", ":w<enter>", { desc = "Save" })
 vim.keymap.set("n", "<leader>q", ":q<enter>", { desc = "Quit" })
 vim.keymap.set("n", "<leader>wq", ":wq<enter>", { desc = "Save and quit" })
 vim.keymap.set("n", "<leader>d", ":q!<enter>", { desc = "Discard changes and quit" })
+
 vim.keymap.set("n", "<leader>o", ":<C-u>call append(line('.'), repeat([''], v:count1))<CR>", { desc = "Newline below" })
 vim.keymap.set(
 	"n",
