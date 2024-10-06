@@ -70,10 +70,9 @@ vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 vim.keymap.set("n", "<leader>;", [[A;<Esc>]], { desc = "Add a semicolon to end of line" })
 vim.keymap.set("n", "<leader>,", [[A,<Esc>]], { desc = "Add a comma to end of line" })
 
-vim.keymap.set("n", "gm", "gM", { desc = "Go to middle of line" })
-vim.keymap.set("n", ";", "0", { desc = "Go to first character of line" })
+vim.keymap.set("n", "gm", "gM", { desc = "Go to middle character of line" })
 vim.keymap.set("n", ",", "<s-^>", { desc = "Go to first character of line" })
-vim.keymap.set("n", ".", "<s-$>", { desc = "Go to first character of line" })
+vim.keymap.set("n", ".", "<s-$>", { desc = "Go to last character of line" })
 
 vim.keymap.set("n", "t", "<s-%>", { desc = "Go to matching symbol" })
 vim.keymap.set("v", "t", "<s-%>", { desc = "Go to matching symbol" })
@@ -678,7 +677,7 @@ require("lazy").setup({
 	require("neovim-config.plugins.lint"),
 	require("neovim-config.plugins.autopairs"),
 	require("neovim-config.plugins.gitsigns"),
-	require("neovim-config.plugins.sql"),
+	-- require("neovim-config.plugins.sql"),
 }, {
 	ui = {
 		icons = vim.g.have_nerd_font and {} or {
