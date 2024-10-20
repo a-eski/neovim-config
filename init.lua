@@ -51,12 +51,6 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagn
 -- Terminal keymaps
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
--- TIP: Disable arrow keys in normal mode
-vim.keymap.set("n", "<left>", '<cmd>echo "Use h to move!!"<CR>')
-vim.keymap.set("n", "<right>", '<cmd>echo "Use l to move!!"<CR>')
-vim.keymap.set("n", "<up>", '<cmd>echo "Use k to move!!"<CR>')
-vim.keymap.set("n", "<down>", '<cmd>echo "Use j to move!!"<CR>')
-
 --  See `:help wincmd` for a list of all window commands
 vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
 vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
@@ -139,27 +133,51 @@ require("lazy").setup({
 	{
 		"folke/which-key.nvim",
 		event = "VimEnter",
-		config = function()
-			local wk = require("which-key")
-			wk.setup()
+		opts = {
+			icons = {
+				mappings = vim.g.have_nerd_font,
+				keys = vim.g.have_nerd_font and {} or {
+					Up = "<Up> ",
+					Down = "<Down> ",
+					Left = "<Left> ",
+					Right = "<Right> ",
+					C = "<C-...> ",
+					M = "<M-...> ",
+					D = "<D-...> ",
+					S = "<S-...> ",
+					CR = "<CR> ",
+					Esc = "<Esc> ",
+					ScrollWheelDown = "<ScrollWheelDown> ",
+					ScrollWheelUp = "<ScrollWheelUp> ",
+					NL = "<NL> ",
+					BS = "<BS> ",
+					Space = "<Space> ",
+					Tab = "<Tab> ",
+					F1 = "<F1>",
+					F2 = "<F2>",
+					F3 = "<F3>",
+					F4 = "<F4>",
+					F5 = "<F5>",
+					F6 = "<F6>",
+					F7 = "<F7>",
+					F8 = "<F8>",
+					F9 = "<F9>",
+					F10 = "<F10>",
+					F11 = "<F11>",
+					F12 = "<F12>",
+				},
+			},
 
-			wk.add({
-				{ "<leader>c", group = "[C]ode" },
-				{ "<leader>c_", hidden = true },
+			spec = {
+				{ "<leader>c", group = "[C]ode", mode = { "n", "x" } },
 				{ "<leader>d", group = "[D]ocument" },
-				{ "<leader>d_", hidden = true },
 				{ "<leader>h", group = "Git[H]ub" },
-				{ "<leader>h_", hidden = true },
 				{ "<leader>r", group = "[R]ename" },
-				{ "<leader>r_", hidden = true },
 				{ "<leader>s", group = "[S]earch" },
-				{ "<leader>s_", hidden = true },
-				{ "<leader>w", group = "[W]orkspace" },
-				{ "<leader>w_", hidden = true },
 				{ "<leader>t", group = "[T]oggle" },
-				{ "<leader>t_", hidden = true },
-			}, {})
-		end,
+				{ "<leader>w", group = "[W]orkspace" },
+			},
+		},
 	},
 
 	{
@@ -197,7 +215,7 @@ require("lazy").setup({
 				--  All the info you're need can be found in `:help telescope.setup()`
 				-- defaults = {
 				--   mappings = {
-				--     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
+				--     i = { ["<c-enter>"] = "to_fuzzy_refine" },
 				--   },
 				-- },
 				-- pickers = {}
@@ -230,7 +248,7 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "[S]earch by [G]rep" })
 			vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
 			vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
-			vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
+			vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = "[S]earch Recent Files" })
 			vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[S]earch existing buffers" })
 			vim.keymap.set("n", "<leader>/", builtin.current_buffer_fuzzy_find, { desc = "[S]earch Current Buffer" })
 			--vim.keymap.set("n", "<leader>sch", builtin.command_history, { desc = "[S]earch [C]ommand [H]istory" })
@@ -382,7 +400,7 @@ require("lazy").setup({
 								callSnippet = "Replace",
 							},
 							-- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-							-- diagnostics = { disable = { 'missing-fields' } },
+							-- diagnostics = { disable = { "missing-fields" } },
 						},
 					},
 				},
@@ -436,30 +454,49 @@ require("lazy").setup({
 
 	{ -- Autoformat
 		"stevearc/conform.nvim",
+		event = { "BufWritePre" },
+		cmd = { "ConformInfo" },
+		keys = {
+			{
+				"<leader>f",
+				function()
+					require("conform").format({ async = true, lsp_format = "fallback" })
+				end,
+				mode = "",
+				desc = "[F]ormat buffer",
+			},
+		},
 		opts = {
 			notify_on_error = false,
 			format_on_save = function(bufnr)
 				-- Disable "format_on_save lsp_fallback" for languages that don't
 				-- have a well standardized coding style. You can add additional
 				-- languages here or re-enable it for the disabled ones.
-				local disable_filetypes = { c = true, cpp = true, cs = true }
+				local disable_filetypes = { c = true, cpp = true }
+				local lsp_format_opt
+				if disable_filetypes[vim.bo[bufnr].filetype] then
+					lsp_format_opt = "never"
+				else
+					lsp_format_opt = "fallback"
+				end
 				return {
 					timeout_ms = 500,
-					lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
+					lsp_format = lsp_format_opt,
 				}
 			end,
 			formatters_by_ft = {
 				lua = { "stylua" },
-				python = { "isort", "black" },
-				javascript = { { "prettierd", "prettier" } },
-				--cs = { "csharpier" },
+				-- Conform can also run multiple formatters sequentially
+				-- python = { "isort", "black" },
+				-- You can use 'stop_after_first' to run the first available formatter from the list
+				-- javascript = { "prettierd", "prettier", stop_after_first = true },
 			},
-			formatters = {
-				--csharpier = {
-				--command = "dotnet-csharpier",
-				--args = { "--write-stdout" },
-				--},
-			},
+			--formatters = {
+			--csharpier = {
+			--command = "dotnet-csharpier",
+			--args = { "--write-stdout" },
+			--},
+			--},
 		},
 	},
 
