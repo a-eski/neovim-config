@@ -77,10 +77,10 @@ vim.keymap.set("n", ".", "<s-$>", { desc = "Go to last character of line" })
 vim.keymap.set("n", "t", "<s-%>", { desc = "Go to matching symbol" })
 vim.keymap.set("v", "t", "<s-%>", { desc = "Go to matching symbol" })
 
-vim.keymap.set("n", "<leader>w", ":w<enter>", { desc = "Save" })
-vim.keymap.set("n", "<leader>q", ":q<enter>", { desc = "Quit" })
-vim.keymap.set("n", "<leader>wq", ":wq<enter>", { desc = "Save and quit" })
-vim.keymap.set("n", "<leader>d", ":q!<enter>", { desc = "Discard changes and quit" })
+vim.keymap.set("n", "<leader>ww", ":w<enter>", { desc = "Save" })
+vim.keymap.set("n", "<leader>wq", ":q<enter>", { desc = "Quit" })
+vim.keymap.set("n", "<leader>wwq", ":wq<enter>", { desc = "Save and quit" })
+vim.keymap.set("n", "<leader>wd", ":q!<enter>", { desc = "Discard changes and quit" })
 
 vim.keymap.set("n", "<leader>o", ":<C-u>call append(line('.'), repeat([''], v:count1))<CR>", { desc = "Newline below" })
 vim.keymap.set(
