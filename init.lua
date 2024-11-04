@@ -5,7 +5,17 @@ vim.g.have_nerd_font = true
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
--- [[ Setting options ]]
+vim.opt.termguicolors = true
+
+-- Only if using PowerShellCore
+vim.opt.shell = "pwsh.exe"
+vim.opt.shellcmdflag =
+	"-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;$PSStyle.Formatting.Error = '';$PSStyle.Formatting.ErrorAccent = '';$PSStyle.Formatting.Warning = '';$PSStyle.OutputRendering = 'PlainText';"
+vim.opt.shellredir = "2>&1 | Out-File -Encoding utf8 %s; exit $LastExitCode"
+vim.opt.shellpipe = "2>&1 | Out-File -Encoding utf8 %s; exit $LastExitCode"
+vim.opt.shellquote = ""
+vim.opt.shellxquote = ""
+
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.mouse = "a"
@@ -83,6 +93,10 @@ vim.keymap.set(
 	":<C-u>call append(line('.') - 1, repeat([''], v:count1))<CR>",
 	{ desc = "Newline above" }
 )
+
+-- undotree
+vim.g.undotree_DiffCommand = "FC"
+vim.keymap.set("n", "<LEADER>u", "<CMD>UndotreeToggle<CR>")
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -185,6 +199,8 @@ require("lazy").setup({
 		opts = {},
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 	},
+
+	{ "mbbill/undotree" },
 
 	{ -- Fuzzy Finder (files, lsp, etc)
 		"nvim-telescope/telescope.nvim",
@@ -710,7 +726,7 @@ require("lazy").setup({
 		end,
 	},
 
-	-- require("neovim-config.plugins.debug"),
+	require("neovim-config.plugins.debug"),
 	require("neovim-config.plugins.indent_line"),
 	require("neovim-config.plugins.lint"),
 	require("neovim-config.plugins.autopairs"),

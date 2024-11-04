@@ -1,100 +1,95 @@
 return {
 	"mfussenegger/nvim-dap",
-	event = "VeryLazy",
 	dependencies = {
 		-- Creates a beautiful debugger UI
 		"rcarriga/nvim-dap-ui",
+
 		-- Required dependency for nvim-dap-ui
 		"nvim-neotest/nvim-nio",
+
 		-- Installs the debug adapters for you
 		"williamboman/mason.nvim",
 		"jay-babu/mason-nvim-dap.nvim",
-		-- Add debuggers here
-		"theHamsta/nvim-dap-virtual-text",
 	},
+	keys = function(_, keys)
+		local dap = require("dap")
+		local dapui = require("dapui")
+		return {
+			-- Basic debugging keymaps, feel free to change to your liking!
+			{ "<F5>", dap.continue, desc = "Debug: Start/Continue" },
+			{ "<F1>", dap.step_into, desc = "Debug: Step Into" },
+			{ "<F2>", dap.step_over, desc = "Debug: Step Over" },
+			{ "<F3>", dap.step_out, desc = "Debug: Step Out" },
+			{ "<leader>b", dap.toggle_breakpoint, desc = "Debug: Toggle Breakpoint" },
+			{
+				"<leader>B",
+				function()
+					dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
+				end,
+				desc = "Debug: Set Breakpoint",
+			},
+			-- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
+			{ "<F7>", dapui.toggle, desc = "Debug: See last session result." },
+			unpack(keys),
+		}
+	end,
 	config = function()
 		local dap = require("dap")
-		dap.set_log_level("TRACE")
-		local reg = require("mason-registry")
 		local dapui = require("dapui")
 
 		require("mason-nvim-dap").setup({
-			-- Makes an effort to setup various debuggers with sensible defaults
+			-- Makes a best effort to setup the various debuggers with
+			-- reasonable debug configurations
 			automatic_installation = true,
-			automatic_setup = true,
 
-			-- additional config for handlers. see mason-nvim-dap README
+			-- You can provide additional configuration to the handlers,
+			-- see mason-nvim-dap README for more information
 			handlers = {},
 
+			-- You'll need to check that you have the required things installed
+			-- online, please don't ask me how to install them :)
 			ensure_installed = {
-				"netcoredbg",
-				"codelldb",
+				-- Update this to ensure that you have the debuggers for the langs you want
+				"delve",
 			},
 		})
 
-		if reg.is_installed("netcoredbg") then
-			local netcoredbg = reg.get_package("netcoredbg")
-			local adapter_config = {
-				type = "executable",
-				command = netcoredbg:get_install_path() .. "/netcoredbg",
-				args = { "--interpreter=vscode" },
-			}
-
-			dap.adapters.netcoredbg = adapter_config
-			dap.adapters.coreclr = adapter_config
-
-			dap.configurations.cs = {
-				{
-					type = "coreclr",
-					name = "Launch netcoredbg",
-					request = "launch",
-					program = function()
-						return vim.fn.input("Path to dll? :", vim.fn.getcwd() .. "\\bin\\Debug\\net", "file")
-					end,
-					env = {
-						ASPNETCORE_ENVIRONMENT = function()
-							return "Development"
-						end,
-						-- ASPNETCORE_URLS = function()
-						-- 	return "https://localhost:56248"
-						-- end,
-					},
-					console = "internalConsole",
-					-- justMyCode = false,
-					-- stopAtEntry = false,
-					-- ---@diagnostic disable-next-line: redundant-parameter
-					-- cwd = function()
-					-- 	return vim.fn.input("Path to appsettings? :", vim.fn.getcwd() .. "\\", "file")
-					-- end,
+		-- Dap UI setup
+		-- For more information, see |:help nvim-dap-ui|
+		dapui.setup({
+			-- Set icons to characters that are more likely to work in every terminal.
+			--    Feel free to remove or use ones that you like more! :)
+			--    Don't feel like these are good choices.
+			icons = { expanded = "▾", collapsed = "▸", current_frame = "*" },
+			controls = {
+				icons = {
+					pause = "⏸",
+					play = "▶",
+					step_into = "⏎",
+					step_over = "⏭",
+					step_out = "⏮",
+					step_back = "b",
+					run_last = "▶▶",
+					terminate = "⏹",
+					disconnect = "⏏",
 				},
-				{
-					name = "Attach netcoredbg",
-					type = "coreclr",
-					request = "attach",
-					processId = require("dap.utils").pick_process,
-					justMyCode = true,
-				},
-			}
-		end
+			},
+		})
 
-		require("nvim-dap-virtual-text").setup({ enabled = true })
-		require("dapui").setup()
+		-- Change breakpoint icons
+		-- vim.api.nvim_set_hl(0, 'DapBreak', { fg = '#e51400' })
+		-- vim.api.nvim_set_hl(0, 'DapStop', { fg = '#ffcc00' })
+		-- local breakpoint_icons = vim.g.have_nerd_font
+		--     and { Breakpoint = '', BreakpointCondition = '', BreakpointRejected = '', LogPoint = '', Stopped = '' }
+		--   or { Breakpoint = '●', BreakpointCondition = '⊜', BreakpointRejected = '⊘', LogPoint = '◆', Stopped = '⭔' }
+		-- for type, icon in pairs(breakpoint_icons) do
+		--   local tp = 'Dap' .. type
+		--   local hl = (type == 'Stopped') and 'DapStop' or 'DapBreak'
+		--   vim.fn.sign_define(tp, { text = icon, texthl = hl, numhl = hl })
+		-- end
 
 		dap.listeners.after.event_initialized["dapui_config"] = dapui.open
 		dap.listeners.before.event_terminated["dapui_config"] = dapui.close
 		dap.listeners.before.event_exited["dapui_config"] = dapui.close
-
-		-- Basic debugging keymaps, feel free to change to your liking!
-		vim.keymap.set("n", "<F5>", dap.continue, { desc = "Debug: Start/Continue" })
-		vim.keymap.set("n", "<F1>", dap.step_into, { desc = "Debug: Step Into" })
-		vim.keymap.set("n", "<F2>", dap.step_over, { desc = "Debug: Step Over" })
-		vim.keymap.set("n", "<F3>", dap.step_out, { desc = "Debug: Step Out" })
-		vim.keymap.set("n", "<leader>b", dap.toggle_breakpoint, { desc = "Debug: Toggle Breakpoint" })
-		vim.keymap.set("n", "<leader>B", function()
-			dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
-		end, { desc = "Debug: Set Breakpoint" })
-
-		-- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
-		vim.keymap.set("n", "<F7>", dapui.toggle, { desc = "Debug: See last session result." })
 	end,
 }
