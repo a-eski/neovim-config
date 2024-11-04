@@ -727,7 +727,7 @@ require("lazy").setup({
 		end,
 	},
 
-	require("neovim-config.plugins.debug"),
+	-- require("neovim-config.plugins.debug"),
 	require("neovim-config.plugins.indent_line"),
 	require("neovim-config.plugins.lint"),
 	require("neovim-config.plugins.autopairs"),
