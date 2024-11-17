@@ -401,6 +401,7 @@ require("lazy").setup({
 			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
 			local servers = {
+				alex = {},
 				clangd = {},
 				-- gopls = {},
 				pyright = {},
@@ -449,7 +450,7 @@ require("lazy").setup({
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
 				"stylua", -- Used to format Lua code
-				--"csharpier",
+				"csharpier",
 				"omnisharp",
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
@@ -508,12 +509,12 @@ require("lazy").setup({
 				-- You can use 'stop_after_first' to run the first available formatter from the list
 				-- javascript = { "prettierd", "prettier", stop_after_first = true },
 			},
-			--formatters = {
-			--csharpier = {
-			--command = "dotnet-csharpier",
-			--args = { "--write-stdout" },
-			--},
-			--},
+			formatters = {
+				csharpier = {
+					command = "dotnet-csharpier",
+					args = { "--write-stdout" },
+				},
+			},
 		},
 	},
 
