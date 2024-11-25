@@ -402,6 +402,7 @@ require("lazy").setup({
 
 			local servers = {
 				alex = {},
+				markdownlint = {},
 				clangd = {},
 				-- gopls = {},
 				pyright = {},
