@@ -404,9 +404,8 @@ require("lazy").setup({
 				alex = {},
 				markdownlint = {},
 				clangd = {},
-				-- gopls = {},
 				pyright = {},
-				-- rust_analyzer = {},
+				rubocop = {},
 				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
 				-- ts_ls = {},
 
