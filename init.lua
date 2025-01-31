@@ -95,10 +95,6 @@ vim.keymap.set(
 	{ desc = "Newline above" }
 )
 
--- undotree
-vim.g.undotree_DiffCommand = "FC"
-vim.keymap.set("n", "<LEADER>u", "<CMD>UndotreeToggle<CR>")
-
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -200,8 +196,6 @@ require("lazy").setup({
 		opts = {},
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 	},
-
-	{ "mbbill/undotree" },
 
 	{ -- Fuzzy Finder (files, lsp, etc)
 		"nvim-telescope/telescope.nvim",
