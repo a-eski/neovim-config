@@ -1,3 +1,6 @@
+# Linux setup notes
+
+``` sh
 apt install git
 apt install unzip
 apt install make
@@ -16,3 +19,4 @@ cd ~
 mkdir .config
 cd .config
 git clone https://github.com/a-eski/neovim-config ./nvim
+```
