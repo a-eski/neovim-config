@@ -11,3 +11,7 @@ winget install zig.zig
 z AppData\Local
 mkdir nvim
 git clone https://github.com/a-eski/neovim-config.git .\nvim
+
+msys2, if you want to install as well
+https://www.msys2.org/
+https://stackoverflow.com/questions/71045716/adding-msys-to-windows-terminal
