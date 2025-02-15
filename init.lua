@@ -95,6 +95,13 @@ vim.keymap.set(
 	{ desc = "Newline above" }
 )
 
+vim.keymap.set(
+	"n",
+	"<leader>M",
+	":e ++ff=dos<enter> <BAR> :set ff=unix<enter> <BAR> :w<enter>",
+	{ desc = "Switch to unix line endings" }
+)
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -399,7 +406,7 @@ require("lazy").setup({
 				markdownlint = {},
 				clangd = {},
 				pyright = {},
-				rubocop = {},
+				-- rubocop = {},
 				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
 				-- ts_ls = {},
 
@@ -444,7 +451,7 @@ require("lazy").setup({
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
 				"stylua", -- Used to format Lua code
-				"csharpier",
+				-- "csharpier",
 				"omnisharp",
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
