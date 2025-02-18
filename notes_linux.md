@@ -6,6 +6,7 @@ apt install unzip
 apt install make
 apt install clang
 apt install gcc
+apt install gdb
 apt install build-essential
 apt install ripgrep
 apt install fzf
