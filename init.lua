@@ -49,6 +49,10 @@ vim.opt.cursorline = true
 
 vim.opt.scrolloff = 12
 
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
+
 -- [[ Basic Keymaps ]]
 vim.opt.hlsearch = true
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
@@ -130,8 +134,6 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Plugins
 require("lazy").setup({
-	{ "tpope/vim-sleuth", event = "VeryLazy" }, -- Detect tabstop and shiftwidth automatically
-
 	{ "numToStr/Comment.nvim", event = "VeryLazy" }, -- Use `opts = {}` to force a plugin to be loaded.
 
 	{ -- Adds git related signs to the gutter, as well as utilities for managing changes
@@ -507,12 +509,16 @@ require("lazy").setup({
 			end,
 			formatters_by_ft = {
 				lua = { "stylua" },
+				c = { "clang_format" },
 				-- Conform can also run multiple formatters sequentially
 				-- python = { "isort", "black" },
 				-- You can use 'stop_after_first' to run the first available formatter from the list
 				-- javascript = { "prettierd", "prettier", stop_after_first = true },
 			},
 			formatters = {
+				clang_format = {
+					prepend_args = { "--style=file", "--fallback-style=LLVM" },
+				},
 				csharpier = {
 					command = "dotnet-csharpier",
 					args = { "--write-stdout" },
