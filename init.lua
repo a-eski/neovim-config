@@ -737,16 +737,6 @@ require("lazy").setup({
 		end,
 	},
 
-	{
-		"iamcco/markdown-preview.nvim",
-		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-		build = "cd app && yarn install",
-		init = function()
-			vim.g.mkdp_filetypes = { "markdown" }
-		end,
-		ft = { "markdown" },
-	},
-
 	-- require("neovim-config.plugins.debug"),
 	require("neovim-config.plugins.indent_line"),
 	require("neovim-config.plugins.lint"),
