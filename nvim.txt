@@ -110,3 +110,7 @@ Visual mode
 	comment selected	gc
 	comment/uncomment selected 		Ctrl + /
 	select a sentence		vas
+
+Splits
+    Ctrl-w s → Split window horizontally
+    Ctrl-w v → Split window vertically
