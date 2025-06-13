@@ -99,6 +99,12 @@ vim.keymap.set(
 	{ desc = "Newline above" }
 )
 
+vim.keymap.set("n", "<A-j>", ":m .+1<CR>==", { noremap = true, silent = true, desc = "Move line up" })
+vim.keymap.set("n", "<A-k>", ":m .-2<CR>==", { noremap = true, silent = true, desc = "Move line down" })
+
+vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv", { noremap = true, silent = true, desc = "Move line(s) up" })
+vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv", { noremap = true, silent = true, desc = "Move line(s) down" })
+
 vim.keymap.set(
 	"n",
 	"<leader>M",
