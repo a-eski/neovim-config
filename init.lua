@@ -58,8 +58,12 @@ vim.opt.hlsearch = true
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
 -- Diagnostic keymaps
-vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous [D]iagnostic message" })
-vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message" })
+vim.keymap.set("n", "[d", function()
+	vim.diagnostic.jump({ count = -1, wrap = true })
+end, { desc = "Go to previous [D]iagnostic message" })
+vim.keymap.set("n", "]d", function()
+	vim.diagnostic.jump({ count = 1, wrap = true })
+end, { desc = "Go to next [D]iagnostic message" })
 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 
@@ -400,7 +404,8 @@ require("lazy").setup({
 
 						if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
 							map("<leader>th", function()
-								vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+								local enabled = not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf })
+								vim.lsp.inlay_hint.enable(enabled)
 							end, "[T]oggle Inlay [H]ints")
 						end
 
@@ -549,7 +554,6 @@ require("lazy").setup({
 				-- have a well standardized coding style. You can add additional
 				-- languages here or re-enable it for the disabled ones.
 				local disable_filetypes = { c = true, cpp = true }
-				local lsp_format_opt
 				if disable_filetypes[vim.bo[bufnr].filetype] then
 					return nil
 				else
